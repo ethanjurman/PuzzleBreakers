@@ -1,15 +1,17 @@
 # ANAGRAM SOLVER by ETHAN H. JURMAN
 charsHash = Hash.new(0) # build hash, with keys = char; values = number of chars avaliable in the chars string
-string = gets().chop!.to_s.split("") # split string so we can parse the chars for values
+string = gets().chop! # remove newline
+string = string.upcase || string # some input strings are lower case
+string = string.split("") # split it!
 string.each do |char| #building hash
   charsHash[char] = charsHash[char] + 1
 end
-parseString = "\\A" #building regex with a string, \A = start of string
+parseString = ""
 charsHash.each do |char, num| # [char]{0,value} limits char usages from 0 to value uses
   parseString << "[#{char}]{0,#{num}}"
 end
-parseString << "\\z" # dictate the end of the string \z
-regex = Regexp.new(parseString) #finalize regex
+regex = Regexp.new("\\A#{parseString}\\z") #finalize regex (\\A and \\z dictate that there will only be one regex per line)
+puts regex
 filename = 'dictionary.txt' # use a dictionary file to find words
 words = [] # our words array, print this later to find results
 File.open(filename, 'r').each_line do |line| 
